@@ -1,0 +1,88 @@
+#title {
+    margin: 50px 0px 0px 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    text-decoration: underline;
+    text-decoration-color:  rgba(46, 9, 134, 0.877);
+}
+
+#main {
+    background-color: rgb(238, 238, 238);
+    margin: 50px 5px 0px 5px;
+    height: 41.5rem;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+button {
+    color: rgb(0, 0, 0);
+    background-color: rgb(255, 255, 255);
+    border-radius: 15px;
+    font-size: 1.2rem;
+    z-index: 5;
+    padding-top: 5px;
+    padding-bottom: 2px;
+}
+
+.game-card {
+    width: 500px;
+    height: 450px;
+    border: white;
+    border-radius: 10px;
+    background-color: rgba(12, 2, 85, 0.904);
+    color: white;
+    position: absolute;
+    box-shadow: 10px 10px 35px 4px rgb(36, 36, 36);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0.8;
+}
+
+#input-players {
+    margin-bottom: 15px;
+    border-radius: 10px;
+    height: 1.5rem;
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.hidden {
+    display: none;
+}
+
+p {
+    font-size: 2rem;
+}
+
+.input-player-edit {
+    border-radius: 10px;
+    height: 1.4rem;
+    text-align: center;
+    font-size: 1.1rem;
+    display: flex;
+    flex-direction: row;
+}
+
+.input-player-edit {
+    margin-bottom: 0.6rem;
+}
+
+ul#input-list {
+    padding: 0px 0px 0px 0px;
+}
+
+#container-round {
+    margin: 20px;
+    text-align: center;
+}
+
+#input-player-points {
+    margin-bottom: 10px;
+}

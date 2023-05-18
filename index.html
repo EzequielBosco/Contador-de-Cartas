@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kapushen NotePoints</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1 id="title">KAPUSHEN</h1>
+    </header>
+
+    <main id="main">
+        <button id="start-game">INICIAR</button>
+        <div class="game-card">
+            <!-- players -->
+            <p class="hidden" id="text-players">Ingresa la cantidad de jugadores</p>
+            <input class="hidden" id="input-players" placeholder="Número de jugadores...">
+            <button class="hidden" id="button-players">Continuar</button>
+            <!-- inputs -->
+            <p class="hidden" id="text-inputs">Ingresa los numbres de los jugadores</p>
+            <div id="players-input" class="hidden"></div>
+            <ul id="input-list"></ul>
+            <button class="hidden" id="button-inputs">Continuar</button>
+            <!-- rounds -->
+            <div class="hidden" id="container-round"> 
+                <p>Ingrese los puntos de la Ronda <span id="round-number"></span></p>
+                <div id="player-data-container"></div>
+                <button id="next-round">Siguiente Ronda</button>
+            </div>
+        </div>
+    </main>
+    <footer></footer>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="script.js"></script>
+</body>
+</html>
