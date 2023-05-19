@@ -7,7 +7,6 @@ function primerLetraMayuscula(palabra) {
 let startGame = document.getElementById("start-game")
 
 startGame.addEventListener("click", () => {
-    alerts("Comenzamos","¿Estás listo?")
     showPlayers()
     hiddenStartGame()
 })
@@ -52,6 +51,7 @@ let textInputs = document.getElementById("text-inputs")
 
 buttonInputs.addEventListener("click", () => {
     if (playerInput.value != "") {
+        alerts("Comenzamos","¿Estás listo? \nCuando termines de jugar tu primer ronda continua")
         addPlayerList()
         hiddenInputs()
         startRounds()
@@ -59,6 +59,8 @@ buttonInputs.addEventListener("click", () => {
         alertsError("error", "Todos los jugadores deben tener nombre", "Vuelva a intentarlo")
     }
 })
+
+//agrego jugadores a la lista
 
 function addPlayerList() {
     for (let i = 0; i < inputList.children.length; i++) {
@@ -71,19 +73,22 @@ function addPlayerList() {
             "name": primerLetraMayuscula(playerName),
             "points": 0
         })
+        sessionStorage.setItem("ListPlayers", JSON.stringify(listPlayers))
     }
 }  
+
+//rondas
 
 let round = 1
 let buttonRound = document.getElementById("next-round")
 let roundNumberElement = document.getElementById("round-number")
 let playerDataContainer = document.getElementById("player-data-container")
+let elementInputs = playerDataContainer.getElementsByClassName("input-player-edit")
 let elementInput
 
 function startRounds() {
     document.getElementById("container-round").classList.remove("hidden")
     roundNumberElement.textContent = round;
-    
     
     playerDataContainer.innerHTML = "";
 
@@ -94,39 +99,60 @@ function startRounds() {
         elementInput = document.createElement("input")
 
         elementInput.classList = "input-player-edit"
-        elementDiv.innerHTML = `<strong>Nombre:</strong> ${data.name} - <strong>Puntos:</strong> ${data.points}`;
+        elementDiv.innerHTML = `<div><strong>Nombre: ${data.name} - </strong><strong>Puntos: ${data.points}</strong></div>`
         elementDiv.appendChild(elementInput)
         playerDataContainer.appendChild(elementDiv)
+        elementInputs[i].placeholder = `Puntaje del jugador ${data.name}`
     }
 }
 
-buttonRound.addEventListener("click", () => {
-    let elementInputs = playerDataContainer.getElementsByClassName("input-player-edit");
 
+
+//sumar puntos y dar ganador
+
+let containerRound = document.getElementById("container-round")
+let winnerEnd = document.getElementById("winner-end")
+let winnerResults = document.getElementById("winner-results")
+let winner
+let points
+
+buttonRound.addEventListener("click", () => {
     if (elementInputs.length > 0 && elementInput.value) {
         round++;
         roundNumberElement.textContent = round
 
         let j = 0
+        winner = null
 
         for (let i = 0; i < elementInputs.length; i++) {
             let data = listPlayers[j]
-            data.points += parseInt(elementInputs[i].value)
-            elementInputs[i].value = 0;
-            if (data.points > 100) {
-                listPlayers.splice(j, 1)
-            } else {
-                j++
+            if (data) {
+                let inputValue = parseInt(elementInputs[i].value)
+                if (!isNaN(inputValue)) {
+                    data.points += parseInt(elementInputs[i].value)
+                    elementInputs[i].value = "";
+                    if (data.points > 100) {
+                        alertsDelete(`Jugador ${data.name} eliminado`, "Se pasó de los 100 puntos")
+                        listPlayers.splice(j, 1)
+                        $(elementInputs[i].closest(".input-player-edit")).hide("slow")
+                        $(elementInputs[i].closest(".input-player-edit")).prev().remove()
+                    } else {
+                        j++
+                    }
+                }
             }
-    
-            let winner
-            if (listPlayers.length < 2) {
-                winner = listPlayers[0]
-            }
-    
-            if (winner) {
-                alerts("¡GANADOR!", `El jugador ${winner.name} ha ganado con ${winner.points} puntos.`)
-            }
+        } 
+
+        if (listPlayers.length < 2) {
+            winner = listPlayers[0]
+        }
+
+        if (winner) {
+            alerts("¡GANADOR!", `El jugador ${winner.name} ha ganado con ${winner.points} puntos.`)
+            winner = listPlayers[0].name
+            points = listPlayers[0].points
+            hiddenPoints()
+            showWinner()
         }
     } else {
         alertsError("error", "Ingresa un puntaje en cada jugador")
@@ -143,12 +169,9 @@ function alerts(title, text) {
         color: '#5',
         text: text,
         confirmButtonText: 'Jugar',
-        background: '#fff url(/images/trees.png)',
+        background: '#fff',
         backdrop: `
         rgba(0,0,123,0.4)
-        url("/images/nyan-cat.gif")
-        left top
-        no-repeat
         `
     })
 }
@@ -162,15 +185,23 @@ function alertsError(icon, title, text) {
         color: '#5',
         text: text,
         confirmButtonText: 'Jugar',
-        background: '#fff url(/images/trees.png)',
+        background: '#fff',
         backdrop: `
         rgba(0,0,123,0.4)
-        url("/images/nyan-cat.gif")
-        left top
-        no-repeat
         `
     })
 }
+
+function alertsDelete(title, text) {
+    Swal.fire({
+        position: "bottom",
+        title: title,
+        text: text,
+        showConfirmButton: false,
+        timer: 1300
+      })
+}
+
 
 //funciones mostrar y ocultar
 
@@ -200,3 +231,33 @@ function hiddenInputs() {
     textInputs.classList.add("hidden")
     inputList.classList.add("hidden")
 }
+
+function hiddenPoints() {
+    containerRound.classList.add("hidden")
+}
+
+function showWinner() {
+    winnerEnd.classList.remove("hidden")
+    winnerResults.innerHTML = `<p>El jugador ${winner} ha ganado con ${points} puntos</p>`
+}
+
+let restart = document.getElementById("restart")
+restart.addEventListener("click", () => {
+    winnerEnd.classList.add("hidden")
+    round = 1
+    
+    storedPlayers = sessionStorage.getItem("ListPlayers")
+    if (storedPlayers) {
+        listPlayers = JSON.parse(storedPlayers)
+    }
+
+    for (let i = 0; i < listPlayers.lenght; i++) {
+        listPlayers[i].points = 0
+    }
+    console.log(listPlayers)
+
+    playerDataContainer.innerHTML = ""
+    startRounds()
+
+    document.getElementById("container-round").classList.remove("hidden")
+})

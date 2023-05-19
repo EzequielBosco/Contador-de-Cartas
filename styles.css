@@ -83,6 +83,7 @@ ul#input-list {
     text-align: center;
 }
 
-#input-player-points {
-    margin-bottom: 10px;
+#winner-end {
+    z-index: 7;
+    text-align: center;
 }
