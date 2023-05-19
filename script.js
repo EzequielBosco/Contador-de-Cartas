@@ -97,21 +97,6 @@ function startRounds() {
         elementDiv.innerHTML = `<strong>Nombre:</strong> ${data.name} - <strong>Puntos:</strong> ${data.points}`;
         elementDiv.appendChild(elementInput)
         playerDataContainer.appendChild(elementDiv)
-
-        if (data.points > 100) {
-            listPlayers = listPlayers.slice(i, i + 1)
-            i--
-        }
-
-        let winner
-        if (listPlayers.length < 2) {
-            winner = listPlayers[0]
-        }
-
-        if (winner) {
-            alerts("¡GANADOR!", `El jugador ${winner.name} ha ganado con ${winner.points} puntos.`)
-            break
-        }
     }
 }
 
@@ -120,19 +105,34 @@ buttonRound.addEventListener("click", () => {
 
     if (elementInputs.length > 0 && elementInput.value) {
         round++;
-        roundNumberElement.textContent = round;
+        roundNumberElement.textContent = round
+
+        let j = 0
 
         for (let i = 0; i < elementInputs.length; i++) {
-            let data = listPlayers[i]
+            let data = listPlayers[j]
             data.points += parseInt(elementInputs[i].value)
             elementInputs[i].value = 0;
+            if (data.points > 100) {
+                listPlayers.splice(j, 1)
+            } else {
+                j++
+            }
+    
+            let winner
+            if (listPlayers.length < 2) {
+                winner = listPlayers[0]
+            }
+    
+            if (winner) {
+                alerts("¡GANADOR!", `El jugador ${winner.name} ha ganado con ${winner.points} puntos.`)
+            }
         }
-        console.log(listPlayers)
     } else {
         alertsError("error", "Ingresa un puntaje en cada jugador")
     }
 })
-    
+
 //funciones alert
 
 function alerts(title, text) {
