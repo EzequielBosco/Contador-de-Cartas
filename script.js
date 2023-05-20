@@ -50,11 +50,10 @@ let buttonInputs = document.getElementById("button-inputs")
 let textInputs = document.getElementById("text-inputs")
 
 buttonInputs.addEventListener("click", () => {
-    if (playerInput.value != "") {
-        alerts("Comenzamos","¿Estás listo? \nCuando termines de jugar tu primer ronda continua")
+    if (playerInput.value != "" && isNaN(playerInput.value)) {
         addPlayerList()
         hiddenInputs()
-        startRounds()
+        showPoints()
     } else {
         alertsError("error", "Todos los jugadores deben tener nombre", "Vuelva a intentarlo")
     }
@@ -77,6 +76,23 @@ function addPlayerList() {
     }
 }  
 
+//limite de puntos
+let textPoints = document.getElementById("text-points")
+let inputPoints = document.getElementById("input-max-points")
+let buttonPoints = document.getElementById("button-points")
+let numberLimit
+
+buttonPoints.addEventListener("click", () => {
+    if (inputPoints.value > 0) {
+        numberLimit = inputPoints.value
+        hiddenLimitPoint()
+        startRounds()
+        alerts("Comenzamos","¿Estás listo? \nCuando termines de jugar tu primer ronda continua")
+    } else {
+        alertsError("error", "El número debe ser mayor a 0")
+    }
+})
+
 //rondas
 
 let round = 1
@@ -84,7 +100,6 @@ let buttonRound = document.getElementById("next-round")
 let roundNumberElement = document.getElementById("round-number")
 let playerDataContainer = document.getElementById("player-data-container")
 let elementInputs = playerDataContainer.getElementsByClassName("input-player-edit")
-let elementInput
 
 function startRounds() {
     document.getElementById("container-round").classList.remove("hidden")
@@ -93,10 +108,9 @@ function startRounds() {
     playerDataContainer.innerHTML = "";
 
     for (let i = 0; i < listPlayers.length; i++) {
-        
         let data = listPlayers[i]
         let elementDiv = document.createElement("div")
-        elementInput = document.createElement("input")
+        let elementInput = document.createElement("input")
 
         elementInput.classList = "input-player-edit"
         elementDiv.innerHTML = `<div><strong>Nombre: ${data.name} - </strong><strong>Puntos: ${data.points}</strong></div>`
@@ -105,8 +119,6 @@ function startRounds() {
         elementInputs[i].placeholder = `Puntaje del jugador ${data.name}`
     }
 }
-
-
 
 //sumar puntos y dar ganador
 
@@ -117,7 +129,7 @@ let winner
 let points
 
 buttonRound.addEventListener("click", () => {
-    if (elementInputs.length > 0 && elementInput.value) {
+    if (elementInputs.length > 0) {
         round++;
         roundNumberElement.textContent = round
 
@@ -130,9 +142,10 @@ buttonRound.addEventListener("click", () => {
                 let inputValue = parseInt(elementInputs[i].value)
                 if (!isNaN(inputValue)) {
                     data.points += parseInt(elementInputs[i].value)
-                    elementInputs[i].value = "";
-                    if (data.points > 100) {
-                        alertsDelete(`Jugador ${data.name} eliminado`, "Se pasó de los 100 puntos")
+                    elementInputs[i].value = ""
+                    console.log(listPlayers)
+                    if (data.points > numberLimit) {
+                        alertsDelete(`Jugador ${data.name} eliminado`, `Se pasó del limite de ${numberLimit} puntos`)
                         listPlayers.splice(j, 1)
                         $(elementInputs[i].closest(".input-player-edit")).hide("slow")
                         $(elementInputs[i].closest(".input-player-edit")).prev().remove()
@@ -148,10 +161,10 @@ buttonRound.addEventListener("click", () => {
         }
 
         if (winner) {
-            alerts("¡GANADOR!", `El jugador ${winner.name} ha ganado con ${winner.points} puntos.`)
+            alertsWin("success", "¡GANADOR!", `Ganó el jugador ${winner.name}`)
             winner = listPlayers[0].name
             points = listPlayers[0].points
-            hiddenPoints()
+            hiddenRound()
             showWinner()
         }
     } else {
@@ -169,6 +182,22 @@ function alerts(title, text) {
         color: '#5',
         text: text,
         confirmButtonText: 'Jugar',
+        background: '#fff',
+        backdrop: `
+        rgba(0,0,123,0.4)
+        `
+    })
+}
+
+function alertsWin(icon, title, text) {
+    Swal.fire({
+        icon: icon,
+        title: title,
+        width: 500,
+        padding: '2rem',
+        color: '#5',
+        text: text,
+        confirmButtonText: 'Continuar',
         background: '#fff',
         backdrop: `
         rgba(0,0,123,0.4)
@@ -221,6 +250,18 @@ function hiddenPlayers() {
     textPlayers.classList.add("hidden")
 }
 
+function showPoints() {
+    inputPoints.classList.toggle("hidden")
+    buttonPoints.classList.toggle("hidden")
+    textPoints.classList.toggle("hidden")
+}
+
+function hiddenLimitPoint() {
+    inputPoints.classList.add("hidden")
+    buttonPoints.classList.add("hidden")
+    textPoints.classList.add("hidden")
+}
+
 function showInputs() {
     buttonInputs.classList.toggle("hidden")
     textInputs.classList.toggle("hidden")
@@ -232,7 +273,7 @@ function hiddenInputs() {
     inputList.classList.add("hidden")
 }
 
-function hiddenPoints() {
+function hiddenRound() {
     containerRound.classList.add("hidden")
 }
 
@@ -251,10 +292,9 @@ restart.addEventListener("click", () => {
         listPlayers = JSON.parse(storedPlayers)
     }
 
-    for (let i = 0; i < listPlayers.lenght; i++) {
+    for (let i = 0; i < listPlayers.length; i++) {
         listPlayers[i].points = 0
     }
-    console.log(listPlayers)
 
     playerDataContainer.innerHTML = ""
     startRounds()

@@ -11,8 +11,7 @@
     <header>
         <h1 id="title">KAPUSHEN</h1>
     </header>
-
-    <main id="main">
+    <main>
         <button id="start-game">INICIAR</button>
         <div class="game-card">
             <!-- players -->
@@ -24,6 +23,10 @@
             <div id="players-input" class="hidden"></div>
             <ul id="input-list"></ul>
             <button class="hidden" id="button-inputs">Continuar</button>
+            <!-- points -->
+            <p class="hidden" id="text-points">Ingrese el número de puntos al cual tiene que llegar un jugador para ser eliminado</p>
+            <input class="hidden" id="input-max-points" placeholder="Límite de puntos...">
+            <button class="hidden" id="button-points">Comenzar</button>
             <!-- rounds -->
             <div class="hidden" id="container-round"> 
                 <p>Ingrese los puntos de la Ronda <span id="round-number"></span></p>
@@ -38,7 +41,8 @@
             </div>
         </div>
     </main>
-    <footer></footer>
+    <footer>
+    </footer>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="script.js"></script>

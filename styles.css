@@ -1,17 +1,20 @@
+body {
+    background-color: rgba(224, 218, 255, 0.212);
+}
+
 #title {
     margin: 50px 0px 0px 0px;
     display: flex;
     flex-direction: row;
     justify-content: center;
     text-decoration: underline;
-    text-decoration-color:  rgba(46, 9, 134, 0.877);
+    text-decoration-color: rgba(46, 9, 134, 0.877);
 }
 
-#main {
+main {
     background-color: rgb(238, 238, 238);
-    margin: 50px 5px 0px 5px;
+    margin: 50px 0px 0px 0px;
     height: 41.5rem;
-    padding: 10px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -30,18 +33,19 @@ button {
 }
 
 .game-card {
-    width: 500px;
-    height: 450px;
+    width: 550px;
+    height: 550px;
     border: white;
     border-radius: 10px;
     background-color: rgba(12, 2, 85, 0.904);
     color: white;
     position: absolute;
-    box-shadow: 10px 10px 35px 4px rgb(36, 36, 36);
+    box-shadow: 10px 10px 35px 4px rgb(63, 63, 63);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    text-align: center;
     opacity: 0.8;
 }
 
@@ -70,6 +74,14 @@ p {
     flex-direction: row;
 }
 
+#input-max-points {
+    border-radius: 10px;
+    height: 1.4rem;
+    text-align: center;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+
 .input-player-edit {
     margin-bottom: 0.6rem;
 }
@@ -83,7 +95,23 @@ ul#input-list {
     text-align: center;
 }
 
+#player-data-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    margin: 15px;
+}
+
 #winner-end {
     z-index: 7;
     text-align: center;
+}
+
+footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
