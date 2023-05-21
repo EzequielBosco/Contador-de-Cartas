@@ -2,7 +2,7 @@ function primerLetraMayuscula(palabra) {
     return palabra.charAt(0).toUpperCase() + palabra.slice(1);
 }
 
-//inicio
+//dar inicio
 
 let startGame = document.getElementById("start-game")
 
@@ -22,6 +22,8 @@ let buttonPlayers = document.getElementById("button-players")
 let playerInput
 let inputList
 
+//crear inputs de jugadores
+
 function createPlayerInput() {
     inputList = document.getElementById("input-list")
     inputList.innerHTML = ""
@@ -30,7 +32,7 @@ function createPlayerInput() {
         let numberPlayer = i
         playerInput = document.createElement("input")
         playerInput.id = `player-name-${numberPlayer}`
-        playerInput.classList = "input-player-edit"
+        playerInput.classList = "input-player-edit input"
         playerInput.placeholder = `Nombre del jugador ${numberPlayer}`
         inputList.appendChild(playerInput)
     }
@@ -45,6 +47,8 @@ buttonPlayers.addEventListener("click", () => {
         alertsError("error", "El numero de jugadores debe ser mayor a 0 y menor que 11", "Vuelva a intentarlo")
     }
 })
+
+//dar nombre a los jugadores
 
 let buttonInputs = document.getElementById("button-inputs")
 let textInputs = document.getElementById("text-inputs")
@@ -101,6 +105,8 @@ let roundNumberElement = document.getElementById("round-number")
 let playerDataContainer = document.getElementById("player-data-container")
 let elementInputs = playerDataContainer.getElementsByClassName("input-player-edit")
 
+//creo inputs para ingresar puntos de cada ronda
+
 function startRounds() {
     document.getElementById("container-round").classList.remove("hidden")
     roundNumberElement.textContent = round;
@@ -112,15 +118,17 @@ function startRounds() {
         let elementDiv = document.createElement("div")
         let elementInput = document.createElement("input")
 
-        elementInput.classList = "input-player-edit"
-        elementDiv.innerHTML = `<div><strong>Nombre: ${data.name} - </strong><strong>Puntos: ${data.points}</strong></div>`
+        elementInput.classList = "input-player-edit input"
+
+        elementDiv.innerHTML = `<div><strong>Nombre: ${data.name} - </strong><strong id="points-${i}">Puntos: ${data.points}</strong></div>`
+
         elementDiv.appendChild(elementInput)
         playerDataContainer.appendChild(elementDiv)
         elementInputs[i].placeholder = `Puntaje del jugador ${data.name}`
     }
 }
 
-//sumar puntos y dar ganador
+//boton con funciones de cada ronda
 
 let containerRound = document.getElementById("container-round")
 let winnerEnd = document.getElementById("winner-end")
@@ -129,13 +137,26 @@ let winner
 let points
 
 buttonRound.addEventListener("click", () => {
-    if (elementInputs.length > 0) {
+    let allInputsFilled = true
+
+    // Verificar si hay algún input vacío
+    for (let i = 0; i < elementInputs.length; i++) {
+        if (listPlayers[i]) {
+            if (elementInputs[i].value === "") {
+                allInputsFilled = false
+                break
+            }
+        }
+    }
+
+    if (allInputsFilled) {
         round++;
         roundNumberElement.textContent = round
 
         let j = 0
         winner = null
 
+        //sumar puntos y eliminar al jugador que supera el limite
         for (let i = 0; i < elementInputs.length; i++) {
             let data = listPlayers[j]
             if (data) {
@@ -143,7 +164,6 @@ buttonRound.addEventListener("click", () => {
                 if (!isNaN(inputValue)) {
                     data.points += parseInt(elementInputs[i].value)
                     elementInputs[i].value = ""
-                    console.log(listPlayers)
                     if (data.points > numberLimit) {
                         alertsDelete(`Jugador ${data.name} eliminado`, `Se pasó del limite de ${numberLimit} puntos`)
                         listPlayers.splice(j, 1)
@@ -156,6 +176,7 @@ buttonRound.addEventListener("click", () => {
             }
         } 
 
+        //crear ganador
         if (listPlayers.length < 2) {
             winner = listPlayers[0]
         }
@@ -166,6 +187,14 @@ buttonRound.addEventListener("click", () => {
             points = listPlayers[0].points
             hiddenRound()
             showWinner()
+        }
+
+        //agregar puntos actualizados
+        for (let i = 0; i < listPlayers.length; i++) {
+            let data = listPlayers[i];
+            let pointsElement = document.getElementById(`points-${i}`);
+        
+            pointsElement.innerHTML = `Puntos: ${data.points}`
         }
     } else {
         alertsError("error", "Ingresa un puntaje en cada jugador")
@@ -231,7 +260,6 @@ function alertsDelete(title, text) {
       })
 }
 
-
 //funciones mostrar y ocultar
 
 function hiddenStartGame() {
@@ -281,6 +309,8 @@ function showWinner() {
     winnerEnd.classList.remove("hidden")
     winnerResults.innerHTML = `<p>El jugador ${winner} ha ganado con ${points} puntos</p>`
 }
+
+//reinicio de juego
 
 let restart = document.getElementById("restart")
 restart.addEventListener("click", () => {
