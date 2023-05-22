@@ -137,19 +137,19 @@ let winner
 let points
 
 buttonRound.addEventListener("click", () => {
-    let allInputsFilled = true
+    let allInputsValue = true
 
     // Verificar si hay algún input vacío
     for (let i = 0; i < elementInputs.length; i++) {
         if (listPlayers[i]) {
             if (elementInputs[i].value === "") {
-                allInputsFilled = false
+                allInputsValue = false
                 break
             }
         }
     }
 
-    if (allInputsFilled) {
+    if (allInputsValue) {
         round++;
         roundNumberElement.textContent = round
 
@@ -167,8 +167,12 @@ buttonRound.addEventListener("click", () => {
                     if (data.points > numberLimit) {
                         alertsDelete(`Jugador ${data.name} eliminado`, `Se pasó del limite de ${numberLimit} puntos`)
                         listPlayers.splice(j, 1)
-                        $(elementInputs[i].closest(".input-player-edit")).hide("slow")
-                        $(elementInputs[i].closest(".input-player-edit")).prev().remove()
+
+                        let inputToRemove = elementInputs[i]
+                        $(inputToRemove).hide("slow", () => {
+                            inputToRemove.remove()
+                        });
+                        $(inputToRemove).prev().remove()
                     } else {
                         j++
                     }
@@ -191,10 +195,12 @@ buttonRound.addEventListener("click", () => {
 
         //agregar puntos actualizados
         for (let i = 0; i < listPlayers.length; i++) {
-            let data = listPlayers[i];
-            let pointsElement = document.getElementById(`points-${i}`);
+            let data = listPlayers[i]
+            let pointsElement = document.getElementById(`points-${i}`)
         
-            pointsElement.innerHTML = `Puntos: ${data.points}`
+            if (pointsElement) {
+                pointsElement.innerHTML = `Puntos: ${data.points}`
+            }
         }
     } else {
         alertsError("error", "Ingresa un puntaje en cada jugador")
