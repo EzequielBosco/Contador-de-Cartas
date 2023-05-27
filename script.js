@@ -171,7 +171,7 @@ buttonRound.addEventListener("click", () => {
                         let inputToRemove = elementInputs[i]
                         $(inputToRemove).hide("slow", () => {
                             inputToRemove.remove()
-                        });
+                        })
                         $(inputToRemove).prev().remove()
                     } else {
                         j++
@@ -202,6 +202,12 @@ buttonRound.addEventListener("click", () => {
                 pointsElement.innerHTML = `Puntos: ${data.points}`
             }
         }
+        console.log(listPlayers)
+        
+        if (listPlayers.length > 1) {
+            startRounds()
+        }
+        
     } else {
         alertsError("error", "Ingresa un puntaje en cada jugador")
     }
