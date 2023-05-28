@@ -170,7 +170,7 @@ buttonRound.addEventListener("click", () => {
 
                         let inputToRemove = elementInputs[i]
                         $(inputToRemove).hide("slow", () => {
-                            inputToRemove.remove()
+                            $(inputToRemove).remove()
                         })
                         $(inputToRemove).prev().remove()
                     } else {
@@ -202,7 +202,6 @@ buttonRound.addEventListener("click", () => {
                 pointsElement.innerHTML = `Puntos: ${data.points}`
             }
         }
-        console.log(listPlayers)
         
         if (listPlayers.length > 1) {
             startRounds()
