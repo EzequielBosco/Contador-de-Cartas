@@ -1,2 +1,2 @@
-# Contador-de-Cartas
-Creo un contador de puntos para un juego de cartas
+# Contador-de-Puntos
+Creo un contador de puntos para juegos con límite de puntos para ser eliminado
