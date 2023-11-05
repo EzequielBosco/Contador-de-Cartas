@@ -255,9 +255,6 @@ function alertsError(icon, title, text) {
         text: text,
         confirmButtonText: 'Jugar',
         background: '#fff',
-        backdrop: `
-        rgba(0,0,123,0.4)
-        `
     })
 }
 

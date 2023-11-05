@@ -1,10 +1,12 @@
 body {
-    background-color: rgba(224, 218, 255, 0.212);
+    background: #0B0B14;
+    font-family: 'Roboto Condensed', sans-serif;
 }
 
 #title {
     margin: 50px 0px 0px 0px;
-    color: #181818;
+    color: rgb(250, 250, 250);
+    font-size: 40px;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -13,7 +15,6 @@ body {
 }
 
 main {
-    background-color: rgb(238, 238, 238);
     margin: 50px 0px 0px 0px;
     height: 41.5rem;
     display: flex;
@@ -34,11 +35,11 @@ button {
 }
 
 .game-card {
-    width: 550px;
+    width: 90%;
     height: 550px;
-    border: white;
-    border-radius: 10px;
-    background-color: rgba(17, 17, 73, 0.781);
+    border: 1px solid white;
+    border-radius: 15px;
+    background-color: rgb(23, 26, 37);
     color: white;
     position: absolute;
     display: flex;
@@ -46,7 +47,8 @@ button {
     justify-content: center;
     align-items: center;
     text-align: center;
-    box-shadow: 20px 20px 60px 5px #acacac
+    opacity: 80%;
+    box-shadow: 3px 3px 4px 0 rgba(150, 150, 150, 0.753)
 }
 
 .hidden {
@@ -81,12 +83,29 @@ ul#input-list {
 }
 
 footer {
+    position: absolute;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    height: 7px;
-    background-color: #383838f5;
+    padding-bottom: 50px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+footer p {
+    color: white;
+    font-size: 22px;
+}
+
+footer a {
+    color: rgba(255, 255, 255, 0.692);
+    transition: .15s ease-in-out;
+}
+
+footer a:hover {
+    color: rgba(255, 255, 255, 0.904);
 }
 
 strong {
